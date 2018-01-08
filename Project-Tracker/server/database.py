@@ -4,6 +4,25 @@ from flask_sqlalchemy import SQLAlchemy
 db = SQLAlchemy()
 
 
+# Create admin & guest if user table is empty
+def create_basic_user():
+    if not User.query.first():
+        for basic_user in [{"cws": "admin",
+                            "psoft": "0000000",
+                            "name": "Administrator",
+                            "role": "admin"},
+                           {"cws": "guest",
+                            "psoft": "0000000",
+                            "name": "Guest",
+                            "role": "guest"}]:
+            user = User(cws=basic_user['cws'],
+                        psoft=basic_user['psoft'],
+                        name=basic_user['name'],
+                        role=basic_user['role'])
+            db.session.add(user)
+            db.session.commit()
+
+
 def initialize(app):
     app.app_context().push()
     db.init_app(app)

@@ -1,7 +1,8 @@
 import sys
 from flask import Flask
 
-import v1
+import api_v1
+import authorization
 import database
 import configuration
 
@@ -13,5 +14,6 @@ if __name__ == '__main__':
         if sys.argv[1].lower() in ['development', 'dev']:
             app.config.from_object(configuration.Development)
     database.initialize(app)
-    v1.initialize(app)
+    api_v1.initialize(app)
+    authorization.initialize(app)
     app.run()
